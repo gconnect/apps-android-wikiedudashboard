@@ -30,6 +30,7 @@ object Versions {
     val leakcanaryVersion = "2.0-alpha-2"
     val rxjavaVersion = "2.3.0"
     val retrofitConverterVersion = "2.5.0"
+    val retrofitVersion = "2.6.0"
     val okHttpLogginVersion = "3.14.2"
     val okhttpUrlConnectionVersion = "3.10.0"
     val transitionVersion = "1.0.1"
@@ -54,8 +55,10 @@ object Versions {
     val materialVersion = cardViewVersion
     val fragmentVersion = annotationVersion
     val navigationVersion = "2.1.0"
-    val koinVersion = "2.1.0-alpha-1"
-
+    val koinVersion = "2.0.1"
+    val lifecycleVersion = "2.2.0-alpha05"
+    val roomVersion = "2.1.0-rc01"
+    val retrofit_coroutines_adapter = "0.9.2"
 }
 
 /**
@@ -81,6 +84,7 @@ object Deps {
 
     val leakcanaryVersion = "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanaryVersion}"
     val rxjavaVersion = "com.squareup.retrofit2:adapter-rxjava:${Versions.rxjavaVersion}"
+    val retrofitVersion = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
     val retrofitConverterVersion = "com.squareup.retrofit2:converter-gson:${Versions.retrofitConverterVersion}"
     val okHttpLogginVersion = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpLogginVersion}"
     val okhttpUrlConnectionVersion = "com.squareup.okhttp3:okhttp-urlconnection:${Versions.okhttpUrlConnectionVersion}"
@@ -114,7 +118,8 @@ object Deps {
 
     //Material design
     val materialVersion = "com.google.android.material:material:${Versions.materialVersion}"
-    val fragmentVersion = "androidx.fragment:fragment-ktx:${Versions.fragmentVersion}"
+    val fragmentKTXVersion = "androidx.fragment:fragment-ktx:${Versions.fragmentVersion}"
+    val fragmentVersion = "androidx.fragment:fragment:${Versions.fragmentVersion}"
     val fragmentNavigationVersion = "androidx.navigation:navigation-fragment-ktx:${Versions.navigationVersion}"
     val navigationVersion = "androidx.navigation:navigation-ui-ktx:${Versions.navigationVersion}"
     // circular dots
@@ -124,4 +129,23 @@ object Deps {
     val koinCoreVersion = "org.koin:koin-core:${Versions.koinVersion}"
     // Koin AndroidX Scope features
     val koinScopeVersion = "org.koin:koin-androidx-scope:${Versions.koinVersion}"
+    // Koin AndroidX ViewModel features
+    val koinViewModelVersion = "org.koin:koin-androidx-viewmodel:${Versions.koinVersion}"
+
+    // Room Dependencies
+    val roomRuntime = "androidx.room:room-runtime:${Versions.roomVersion}"
+    val roomCompiler = "androidx.room:room-compiler:${Versions.roomVersion}"
+    val room =  "androidx.room:room-ktx:${Versions.roomVersion}"
+
+
+    // Lifecycle components
+    val lifecycleExtension = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleVersion}"
+    val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycleVersion}"
+    val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
+    val lifecycleLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleVersion}"
+    val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
+
+    //coroutines
+    val coroutineAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.retrofit_coroutines_adapter}"
+
 }

@@ -1,5 +1,7 @@
 package org.wikiedufoundation.wikiedudashboard.ui.campaign.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 
@@ -12,15 +14,20 @@ import com.google.gson.annotations.SerializedName
  * @property slug String, campaign slug
  * @property description String, campaign description
  * ***/
+
+@Entity(tableName = "campaign_list")
 class CampaignListData(
+        @PrimaryKey
         @SerializedName("id")
         val id: Int,
         @SerializedName("title")
         val title: String,
         @SerializedName("slug")
         val slug: String,
+        // You're getting the error because some description are null, then when you use replace
+        // it compares all object property to check if is the same or not. Here I've to use Optional
         @SerializedName("description")
-        val description: String
+        val description: String?
 ) {
     override fun toString(): String {
         return "CampaignListData(" +

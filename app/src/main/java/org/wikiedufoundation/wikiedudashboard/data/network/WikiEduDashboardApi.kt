@@ -52,21 +52,19 @@ interface WikiEduDashboardApi {
      * This API is used to fetch Dashboard details. Ex - My Courses - Active, Archived.
      ***/
     @GET("dashboard.json")
-    fun getDashboardDetail(
-            @Header("Cookie") sessionIdAndToken: String
-    ): Call<MyDashboardResponse>
+    fun getDashboardDetail(@Header("Cookie") sessionIdAndToken: String): Call<MyDashboardResponse>
 
     /**
      * This API is used to fetch list of active courses.
      ***/
     @GET("explore.json")
-    fun getExploreCourses(@Header("Cookie") sessionIdAndToken: String): Call<ExploreCoursesResponse>
+    suspend fun getExploreCourses(@Header("Cookie") sessionIdAndToken: String): ExploreCoursesResponse
 
     /**
      * This API is used to fetch list of active campaigns.
      ***/
     @GET("campaigns.json")
-    fun getExploreCampaigns(@Header("Cookie") sessionIdAndToken: String): Call<ExploreCampaignsResponse>
+    suspend fun getExploreCampaigns(@Header("Cookie") sessionIdAndToken: String): ExploreCampaignsResponse
 
     /**
      * This API is used to fetch profile stats.
