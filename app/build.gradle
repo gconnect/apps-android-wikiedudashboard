@@ -63,6 +63,7 @@ dependencies {
     debugImplementation Deps.leakcanaryVersion
     implementation Deps.rxjavaVersion
     implementation Deps.retrofitConverterVersion
+    implementation Deps.retrofitVersion
     implementation Deps.okHttpLogginVersion
     implementation Deps.okhttpUrlConnectionVersion
     implementation Deps.transitionVersion
@@ -109,6 +110,8 @@ dependencies {
     implementation Deps.koinCoreVersion
     // Koin AndroidX Scope features
     implementation Deps.koinScopeVersion
+    // Koin ViewModel
+    implementation Deps.koinViewModelVersion
 
     // Room Dependencies
     api Deps.roomRuntime
@@ -122,5 +125,7 @@ dependencies {
     implementation Deps.lifecycleLivedata
     implementation Deps.lifecycleRuntime
     implementation Deps.coroutineAdapter
+    implementation 'androidx.room:room-runtime:2.2.3'
+    annotationProcessor 'androidx.room:room-compiler:2.2.3'
 
 }
