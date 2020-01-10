@@ -9,10 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_campaign_list.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import org.wikiedufoundation.wikiedudashboard.R
 import org.wikiedufoundation.wikiedudashboard.data.preferences.SharedPrefs
 import org.wikiedufoundation.wikiedudashboard.ui.adapters.CampaignListRecyclerAdapter
-import org.wikiedufoundation.wikiedudashboard.ui.campaign.viewmodel.CourseListViewModel
 import org.wikiedufoundation.wikiedudashboard.ui.campaign.data.CampaignListData
 import org.wikiedufoundation.wikiedudashboard.ui.campaign.viewmodel.ActiveCampaignViewModel
 import org.wikiedufoundation.wikiedudashboard.util.filterOrEmptyList
@@ -27,9 +28,9 @@ import kotlin.collections.ArrayList
  * create an instance of this fragment.
  */
 class CampaignListFragment : Fragment() {
-    private val activeCampaignViewModel: ActiveCampaignViewModel by inject()
 
     private val sharedPrefs: SharedPrefs by inject()
+    private val activeCampaignViewModel: ActiveCampaignViewModel by viewModel { parametersOf(sharedPrefs.cookies) }
 
     private var mParam1: String? = null
     private var mParam2: String? = null
@@ -50,10 +51,7 @@ class CampaignListFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_campaign_list, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_campaign_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,7 +61,6 @@ class CampaignListFragment : Fragment() {
         }
 
         initializeRecyclerView()
-        sharedPrefs.cookies?.let { (activeCampaignViewModel.fetchCampaignList(it)) }
         setData()
         showProgressBar()
         showMessage()
@@ -73,7 +70,7 @@ class CampaignListFragment : Fragment() {
      *   This initializes the recyclerview
      */
 
-    fun initializeRecyclerView() {
+    private fun initializeRecyclerView() {
         recyclerCampaignList?.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
@@ -86,7 +83,7 @@ class CampaignListFragment : Fragment() {
      */
     fun setData() {
         activeCampaignViewModel.data.observe(this, androidx.lifecycle.Observer {
-            Timber.d("hello", it.toString())
+            //            Timber.d("hello", it[0].toString())
             if (it.isNotEmpty()) {
                 recyclerCampaignList?.visibility = View.VISIBLE
                 campaignListRecyclerAdapter.setData(it)
@@ -106,7 +103,7 @@ class CampaignListFragment : Fragment() {
     fun showProgressBar() {
         activeCampaignViewModel.progressbar.observe(this, androidx.lifecycle.Observer {
             it?.let {
-                if (it) progressBar.visibility = View.VISIBLE else View.GONE
+                progressBar.visibility = if (it) View.VISIBLE else View.GONE
             }
         })
     }
@@ -136,8 +133,8 @@ class CampaignListFragment : Fragment() {
 
     companion object {
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private const val ARG_PARAM1 = "param1"
+        private const val ARG_PARAM2 = "param2"
 
         /**
          * Use this factory method to create a new instance of
@@ -147,14 +144,13 @@ class CampaignListFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment ExploreFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): CampaignListFragment {
-            val fragment = CampaignListFragment()
+        // Just a minor change. Since  it's creating a new instance of this fragment, kotlin helper
+        // function are always welcome to apply some properties to it
+        fun newInstance(param1: String, param2: String) = CampaignListFragment().apply {
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)
-            fragment.arguments = args
-            return fragment
+            this.arguments = args
         }
     }
 }
