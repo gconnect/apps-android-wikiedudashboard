@@ -1,6 +1,5 @@
 package org.wikiedufoundation.wikiedudashboard.ui.campaign.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -19,13 +18,13 @@ interface ActiveCampaignDao {
      *
      **/
     @Query("SELECT * from campaign_list ORDER BY id ASC")
-    fun getAllCampaign(): LiveData<List<CampaignListData>>
+    suspend fun getAllCampaign(): List<CampaignListData>
 
     /**
      * This insert the data into the database
      *
      **/
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCampaign(campaignList: List<CampaignListData>)
 
 }
