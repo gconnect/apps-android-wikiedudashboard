@@ -1,49 +1,37 @@
 package org.wikiedufoundation.wikiedudashboard.ui.campaign.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.wikiedufoundation.wikiedudashboard.data.network.WikiEduDashboardApi
 import org.wikiedufoundation.wikiedudashboard.ui.campaign.dao.ActiveCampaignDao
 import org.wikiedufoundation.wikiedudashboard.ui.campaign.data.CampaignListData
-import timber.log.Timber
 
 /**Declares the DAO as a private property in the constructor. Pass in the DAO
-*instead of the whole database, because you only need access to the DAO*
+ *instead of the whole database, because you only need access to the DAO*
  * */
 class ActiveCampaignRepository(private val wikiEduDashboardApi: WikiEduDashboardApi,
-                               private val activeCampaignDao: ActiveCampaignDao){
+                               private val activeCampaignDao: ActiveCampaignDao) {
 
-    private var campaignList = mutableListOf<CampaignListData>()
-    private var campaignListLiveData = MutableLiveData<List<CampaignListData>>()
-    val completableJob = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
-
+    // In terms of android, use global variable only when it's needed. The class will look more concise
+    // and your code will be clearer. This class has just a few lines, but can always be smaller.
+    // When you use global variable, you give the idea for the newcomers that this variable is fullfiled
+    // in one part of the code, and used in another. That was not the case.
 
     /** Room executes all queries on a separate thread.
      * Observed LiveData will notify the observer when the data has changed.
      * */
-    val allCampaignList : LiveData<List<CampaignListData>> = activeCampaignDao.getAllCampaign()
+    suspend fun allCampaignList() = withContext(Dispatchers.IO) { activeCampaignDao.getAllCampaign() }
 
 
     /** The suspend modifier tells the compiler that this must be called from a
      *  coroutine or another suspend function.
      **/
-    suspend fun getCampaignListLiveData(cookies: String){
-        coroutineScope.launch {
-            val request = wikiEduDashboardApi.getExploreCampaigns(cookies)
-            withContext(Dispatchers.Main) {
-                try {
-                    val mExploreCampaign = request.await()
-                    campaignList = mExploreCampaign.campaigns
-                    campaignListLiveData.value=campaignList;
-                    activeCampaignDao.insertCampaign(campaignList)
-                } catch (e: Exception) {
-                    Timber.e(e.message.toString())
-                } catch (e: Throwable) {
-                    Timber.e(e.message.toString())
-                }
-            }
-        }
+    suspend fun getCampaignList(cookies: String) = withContext(Dispatchers.IO) {
+        //If you use coroutine deferred, you are saying that the call is async, although you here you're
+        //making it sync. So, to keep simple, and keep a good code readability just make your repo call suspend
+        val request = wikiEduDashboardApi.getExploreCampaigns(cookies)
+        val campaignList: List<CampaignListData> = request.campaigns
+        activeCampaignDao.insertCampaign(campaignList)
     }
+
 }
