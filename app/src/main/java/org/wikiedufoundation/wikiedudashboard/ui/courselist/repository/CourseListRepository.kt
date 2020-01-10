@@ -3,8 +3,8 @@ package org.wikiedufoundation.wikiedudashboard.ui.campaign.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
-import org.wikiedufoundation.wikiedudashboard.ui.campaign.dao.CourseListDao
 import org.wikiedufoundation.wikiedudashboard.data.network.WikiEduDashboardApi
+import org.wikiedufoundation.wikiedudashboard.ui.campaign.dao.CourseListDao
 import org.wikiedufoundation.wikiedudashboard.ui.courselist.data.CourseListData
 import timber.log.Timber
 
@@ -34,8 +34,7 @@ class CourseListRepository(private val wikiEduDashboardApi: WikiEduDashboardApi,
             val request = wikiEduDashboardApi.getExploreCourses(cookies)
             withContext(Dispatchers.Main) {
                 try {
-                    val mExploreCourse = request.await()
-                    courseList = mExploreCourse.courses
+                    courseList = request.courses
                     courseListLiveData.value=courseList;
                     courseListDao.insertCourse(courseList)
                 } catch (e: Exception) {
