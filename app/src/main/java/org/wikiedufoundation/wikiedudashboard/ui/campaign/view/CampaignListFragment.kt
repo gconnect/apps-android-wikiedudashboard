@@ -30,7 +30,7 @@ import kotlin.collections.ArrayList
 class CampaignListFragment : Fragment() {
 
     private val sharedPrefs: SharedPrefs by inject()
-    private val activeCampaignViewModel: ActiveCampaignViewModel by viewModel { parametersOf(sharedPrefs.cookies) }
+    private val activeCampaignViewModel by viewModel<ActiveCampaignViewModel> { parametersOf(sharedPrefs.cookies) }
 
     private var mParam1: String? = null
     private var mParam2: String? = null
