@@ -1,4 +1,4 @@
-package org.wikiedufoundation.wikiedudashboard.ui.dashboard
+package org.wikiedufoundation.wikiedudashboard.ui.dashboard.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,16 +28,15 @@ class DashboardViewModel(private val dashboardRepository: DashboardRepository, p
      **/
 
     init {
-
-        _progressbar.postValue(false)
-
         viewModelScope.launch {
             try {
-
+                _progressbar.postValue(true)
                 _courseList.postValue(dashboardRepository.getDashboardDetail(cookies))
+                _progressbar.postValue(false)
 
             } catch (e: IOException) {
                 _showMsg.postValue(ShowMessage("Unable to connect to server."))
+                _progressbar.postValue(false)
             }
         }
     }
