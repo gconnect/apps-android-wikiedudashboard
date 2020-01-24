@@ -9,14 +9,9 @@ import org.wikiedufoundation.wikiedudashboard.ui.courselist.data.CourseListData
 interface DashboardRepository{
 
 
-    /** Room executes all queries on a separate thread.
-     * Observed LiveData will notify the observer when the data has changed.
-     * */
-    val allCourseList: LiveData<List<CourseListData>>
-
     /** The suspend modifier tells the compiler that this must be called from a
      *  coroutine or another suspend function.
      **/
-    suspend fun getDashboardDetail(cookies: String)
+    suspend fun getDashboardDetail(cookies: String): List<CourseListData>
 
 }
